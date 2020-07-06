@@ -39,9 +39,10 @@ public class SyntacticParser {
                         output.append(erro).append("\n");
                     }
                 } else {
-                    output.append("Build Successfull!\n");
-                    output.append("Running:\n");
+                    
+                    output.append("Resultado:\n");
                     output.append(vm.getResult());
+                    output.append("Compilação bem sucedida\n");
                     
                 }
                 
