@@ -59,4 +59,22 @@ class Symbol {
     public void setAtributo2(String atributo2) {
         this.atributo2 = atributo2;
     }
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        String newLine = System.getProperty("line.separator");
+        result.append("Identificador: ");
+        result.append(this.identificador);
+        result.append(newLine);
+        result.append("Categoria: ");
+        result.append(this.categoria);
+        result.append(newLine);
+        result.append("Atributo 1:  ");
+        result.append(this.atributo1);
+        result.append(newLine);
+        result.append("Atributo 2:  ");
+        result.append(this.atributo2);
+        result.append(newLine);
+        return result.toString();
+    }
 }

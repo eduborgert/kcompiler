@@ -18,7 +18,7 @@ public class Semantic {
     private final List<EnumType> tabelaTipoEnumerado = new ArrayList<>();
     private final List<Instruction> instrucoes = new ArrayList();
     private final ArrayList listaAtributos = new ArrayList();
-    private int ponteiro = 0;
+    private int ponteiro = 1;
     private int tipo;
     private String contexto = "";
     private int vi = 0;
@@ -69,26 +69,31 @@ public class Semantic {
     }
     
     public void Action06(){
+        System.out.println("meu tipo é " + tipo);
       int n = vp + vi;
       int size = tabelaSimbolos.size();
 // tem erro aqui
       for(int i = size-1; i >= size-n; i--) {
+          System.out.println("entrou?   ");
           tabelaSimbolos.get(i).setCategoria(Integer.toString(tipo));
       }
       vp = vp + tvi;
       
       switch(tipo) {
-        case 1 | 5:
-          instrucoes.add( new Instruction(ponteiro, "ALI", Integer.toString(vp)) );
+        case 1:
+            System.out.println("vim na instrucao certa vp = " + Integer.toString(vp));
+            
+          instrucoes.add( new Instruction(ponteiro, "ALI", Integer.toString(1)) );
+            System.out.println(instrucoes.get(0).getInstrucao());
           ponteiro++;
           break;
           
-        case 2 | 6:
+        case 2:
           instrucoes.add( new Instruction(ponteiro, "ALR", Integer.toString(vp)) );
           ponteiro++;
           break;
           
-        case 3 | 7:
+        case 3:
           instrucoes.add( new Instruction(ponteiro, "ALS", Integer.toString(vp)) );
           ponteiro++;
           break;
@@ -97,14 +102,28 @@ public class Semantic {
           instrucoes.add( new Instruction(ponteiro, "ALB", Integer.toString(vp)) );
           ponteiro++;
           break;
+        case 5:
+          instrucoes.add( new Instruction(ponteiro, "ALI", Integer.toString(vp)) );
+            System.out.println(instrucoes.get(instrucoes.size()-1));
+          ponteiro++;
+          break;
+        case 6:
+          instrucoes.add( new Instruction(ponteiro, "ALR", Integer.toString(vp)) );
+          ponteiro++;
+          break;
+        case 7:
+          instrucoes.add( new Instruction(ponteiro, "ALS", Integer.toString(vp)) );
+          ponteiro++;
+          break;
+              
+        default:
+            System.out.println("dá um alo");
       }
-      
-      switch(tipo) {
-        case 1 | 2 | 3 | 4:
+        System.out.println("sai vivo");
+      if(tipo >=  1 && tipo <=4){
           vp = 0;
           vi = 0;
           tvi = 0;
-          break;
       }
     }
 
@@ -143,7 +162,7 @@ public class Semantic {
         } else {
             vt++;
             vp++;
-            tabelaSimbolos.add( new Symbol(token, "0", Integer.toString(vt), "-") );
+            tabelaSimbolos.add( new Symbol(token, "?", Integer.toString(vt), "-") );
         }
     }
     
@@ -198,6 +217,7 @@ public class Semantic {
             } else {
               if (variavelIndexada) {
                 listaAtributos.add( Integer.toString(Integer.parseInt(atr1) + constanteTmp - 1) );
+                
               } else {
                 System.out.println("Identificador de variável indexada exige índice");
                 erros.add("Identificador de variável indexada exige índice");
@@ -298,12 +318,12 @@ public class Semantic {
     }
     
     public void Action19(){
-      //erro
-      //descobrir como contar a quantidade de atributos armazenados na ação 11
-      for(int i = 0; i < listaAtributos.size(); i++) {
-        instrucoes.add( new Instruction(ponteiro, "STR", (String) listaAtributos.get(i)) );
-        ponteiro++;
-      }
+      
+       listaAtributos.stream().forEach(i -> {
+            instrucoes.add(new Instruction(ponteiro, "STR", i.toString()));
+            ponteiro++;
+        });
+        listaAtributos.clear();
     }
 
     public void Action20(){
@@ -386,6 +406,7 @@ public class Semantic {
     
     public void Action29(){
       int n = (int) pilhaDesvios.pop();
+        
       int indice = recuperaIndiceInstrucao(n);
       instrucoes.get(indice).setEndereco(Integer.toString(ponteiro));
       //atualiza endereço da instrução
@@ -573,6 +594,8 @@ public class Semantic {
     for(Instruction inst : instrucoes){
       if ( inst.getPonteiro() == ponteiro ){
         return n;
+      }else{
+          n++;
       }
     }
     return -1;
@@ -680,15 +703,18 @@ public class Semantic {
   public List<EnumType> getEnums(){
       return tabelaTipoEnumerado;
   }
-
+// printar as tabelas de simbolos , enumerados e instruções
     private void printTabelas() {
+        System.out.println("|SIMBOLOS|");
         for(Symbol s : getSimbolos()){
-            System.out.println(s.getIdentificador() +" | "+ s.getCategoria() +
-                    " | "+s.getAtributo1() +" | "+ s.getAtributo2());
+            System.out.println(s.toString());
             }
+        for(EnumType e : getEnums()){
+                System.out.println(e.toString());
+            }
+        System.out.println("|INSTRUÇÕES|");
         for(Instruction i : getInstructions()){
-            System.out.println(i.getPonteiro() +" | "+ i.getInstrucao() +
-                    " | "+i.getEndereco());
+            System.out.println(i.toString());
         }
     }
 }

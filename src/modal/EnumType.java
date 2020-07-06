@@ -46,4 +46,20 @@ class EnumType {
     public void setConstante(String constante){
         this.constantes.add(constante);
     }
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        String newLine = System.getProperty("line.separator");
+        result.append("Enumerado");
+        result.append(newLine);
+        result.append("Identificador: ");
+        result.append(this.getIdentificador());
+        result.append(newLine);
+        result.append("Constantes: { ");
+        for(String cons : this.constantes){
+            result.append(cons + " ");
+        }
+        result.append(" }");
+        return result.toString();
+    }
 }

@@ -23,8 +23,8 @@ public class MaquinaVirtual {
     private List<String> erros;
     private Integer ponteiro;
     private Integer topo;
-    //private Pront pront;
-    private List<String> result;
+    private final StringBuilder result = new StringBuilder();
+    private final String newline = System.getProperty("line.separator");
     private boolean loop;
     private String valorEntrada;
 
@@ -47,7 +47,7 @@ public class MaquinaVirtual {
         pilha = new ArrayList<>();
         ponteiro = 0;
         topo = 0;
-        this.result = new ArrayList<>();
+        
         //pront = new Pront();
         //pront.setVisible(true);
         loop = true;
@@ -72,8 +72,8 @@ public class MaquinaVirtual {
     public List<String> getErros() {
         return erros;
     }
-    public List<String> getResult() {
-        return result;
+    public String getResult() {
+        return result.toString();
     }
     public void executar(){
         erros = new ArrayList<>();
@@ -321,7 +321,7 @@ public class MaquinaVirtual {
         topo = topo - 1;
         ponteiro = ponteiro + 1;
     }
-
+    
     private void instrucaoEQL(){
         boolean aux = pilha.get(topo - 2).equals(pilha.get(topo - 1));
         if(aux){
@@ -433,9 +433,6 @@ public class MaquinaVirtual {
     private void instrucaoREA(Integer tipo){
         topo = topo + 1;
         String value = JOptionPane.showInputDialog(valorEntrada);
-//        String value = pront.getValor();
-//        pilha.add(pront.getValor()); //veriticar como para entrada;
-//implementar validação de inteiro float e boolean. char não precisa também deve ser implementado no set validação de entrada
         if(tipo == 1){
             Integer validador = Math.round(Float.parseFloat(value));
             if(!regexInteger(value)){
@@ -453,9 +450,9 @@ public class MaquinaVirtual {
         } else if(tipo == 3){
             pilha.add(value);
         } else if(tipo == 4){
-            if(value.toUpperCase().equals("TRUE") || value.toUpperCase().equals("1")){
+            if(value.toUpperCase().equals("TRUE") || value.equals("1")){
                 pilha.add("TRUE");
-            } else if(value.toUpperCase().equals("FALSE") || value.toUpperCase().equals("0")){
+            } else if(value.toUpperCase().equals("FALSE") || value.equals("0")){
                 pilha.add("FALSE");
             } else {
                 erros.add("valor (" + value + ") é um boolean inválido");
@@ -492,7 +489,7 @@ public class MaquinaVirtual {
     private void instrucaoSTR(Integer endereco){
         pilha.set(endereco - 1, pilha.get(topo - 1));
         pilha.remove(topo - 1);
-        topo = topo - 1;
+        topo = topo - 1;    
         ponteiro = ponteiro + 1;
     }
 
@@ -523,7 +520,8 @@ public class MaquinaVirtual {
     }
 
     private void instrucaoWRT(){
-        this.result.add(pilha.get(topo - 1));
+        this.result.append(pilha.get(topo - 1));
+        this.result.append(newline);
         //pront.setValor(pilha.get(topo - 1));
         pilha.remove(topo - 1);
         topo = topo - 1;

@@ -24,28 +24,25 @@ public class SyntacticParser {
         
         StringBuilder output = new StringBuilder();
         try {
-            System.out.println("tentei");
             Semantic sem = parser.syntaxAnalisys();
             
             if (sem.getErros().size() > 0) {
-                System.out.println("errou");
                 for (String erro : sem.getErros()) {
                     output.append(erro).append("\n");
                 }
             } else {
                 
                 vm = new MaquinaVirtual(sem.getSimbolos(), sem.getInstructions(),sem.getEnums());
-                System.out.println("hora de executar");
                 vm.executar();
                 if(vm.getErros().size() > 0){
                     for (String erro : vm.getErros()) {
                         output.append(erro).append("\n");
                     }
                 } else {
-                    output.append("Success!\n");
-                    for (String result : vm.getResult()) {
-                        output.append(result).append("\n");
-                    }
+                    output.append("Build Successfull!\n");
+                    output.append("Running:\n");
+                    output.append(vm.getResult());
+                    
                 }
                 
             }

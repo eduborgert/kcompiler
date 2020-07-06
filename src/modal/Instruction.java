@@ -45,4 +45,19 @@ class Instruction {
         public void setEndereco(String endereco) {
             this.endereco = endereco;
         }
+        @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        String newLine = System.getProperty("line.separator");
+        result.append("Ponteiro: ");
+        result.append(this.ponteiro);
+        result.append(newLine);
+        result.append("Instrução: ");
+        result.append(this.instrucao);
+        result.append(newLine);
+        result.append("Endereço: ");
+        result.append(this.endereco);
+        result.append(newLine);
+        return result.toString();
+    }
 }
